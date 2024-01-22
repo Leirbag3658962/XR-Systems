@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Quit : MonoBehaviour
@@ -15,14 +16,7 @@ public class Quit : MonoBehaviour
                 UnityEditor.EditorApplication.isPlaying = false;
             #else
                 Application.Quit();
-            #endif
-        }
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+            #endif  
+        };   
     }
 }
