@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Lightscript : MonoBehaviour
 {
     public Light light;
+    public InputActionReference action;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,9 +16,25 @@ public class Lightscript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown("a"))
+        action.action.Enable();
+        action.action.performed += (ctx) =>
         {
-            light.color = Color.green;
-        }
-}
+            if (light.color == Color.white)
+            {
+                light.color = Color.green;
+            }
+            else if (light.color == Color.green)
+            {
+                light.color = Color.blue;
+            }
+            else if (light.color == Color.blue)
+            {
+                light.color = Color.red;
+            }
+            else if (light.color == Color.red)
+            {
+                light.color = Color.white;
+            }
+        };
+    }
 }
