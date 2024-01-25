@@ -20,11 +20,17 @@ public class Breakout : MonoBehaviour
         {
             if (transform.position == new Vector3(0, 0, 0))
             {
-                transform.Translate(Vector3.up*25);
+                transform.Translate(new Vector3(0, 12.9f, -5.3f));
             }
-            else if (transform.position== new Vector3(0, 25, 0))
+            else if (transform.position == new Vector3(0, 12.9f, -5.3f))
             {
-                transform.Translate(Vector3.down*25);
+                transform.Translate(new Vector3(-14.7f, 15f, 19.4f));
+                transform.Rotate(new Vector3(0, 135, 0));
+            }
+            else if (transform.position == new Vector3(-14.7f, 15f, 19.4f))
+            {
+                transform.Translate(new Vector3(0, 0, 0));
+                transform.Rotate(new Vector3(0, 0, 0));
             }
         };
     }
