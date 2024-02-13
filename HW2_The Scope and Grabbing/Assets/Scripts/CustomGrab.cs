@@ -5,37 +5,25 @@ using UnityEngine.InputSystem;
 
 public class CustomGrab : MonoBehaviour
 {
-    // Référence à l'autre main
+    // This script should be attached to both controller objects in the scene
+    // Make sure to define the input in the editor (LeftHand/Grip and RightHand/Grip recommended respectively)
     CustomGrab otherHand = null;
-
-    // Liste des objets proches
     public List<Transform> nearObjects = new List<Transform>();
-
-    // Objet saisi actuellement
     public Transform grabbedObject = null;
-
-    // Référence à l'action d'entrée
     public InputActionReference action;
-
-    // État de saisie actuel
     bool grabbing = false;
+    public bool doubleRotation = false;
+    private Vector3 initialPosition;
+    private Quaternion initialRotation;
 
-    // Position de l'objet saisi
-    public Vector3 grabbedObjectPosition;
 
-    // Rotation de l'objet saisi
-    public Quaternion grabbedObjectRotation;
 
-    // Valeur de l'action d'entrée
-    public float actionValue;
-
-    void Start()
+    private void Start()
     {
-        // Activer l'action d'entrée
         action.action.Enable();
 
-        // Trouver l'autre main
-        foreach (CustomGrab c in transform.parent.GetComponentsInChildren<CustomGrab>())
+        // Find the other hand
+        foreach(CustomGrab c in transform.parent.GetComponentsInChildren<CustomGrab>())
         {
             if (c != this)
                 otherHand = c;
@@ -44,52 +32,53 @@ public class CustomGrab : MonoBehaviour
 
     void Update()
     {
-        // Obtenir l'état de saisie de l'action d'entrée
         grabbing = action.action.IsPressed();
-
-        // Obtenir la valeur de l'action d'entrée
-        actionValue = action.action.ReadValue<float>();
-
         if (grabbing)
         {
-            // Si aucun objet n'est saisi, essayez de saisir un objet proche ou celui dans l'autre main
+            // Grab nearby object or the object in the other hand
             if (!grabbedObject)
                 grabbedObject = nearObjects.Count > 0 ? nearObjects[0] : otherHand.grabbedObject;
 
             if (grabbedObject)
             {
-                // Obtenir la position et la rotation de l'objet saisi
-                grabbedObjectPosition = grabbedObject.position;
-                grabbedObjectRotation = grabbedObject.rotation;
+                // Change these to add the delta position and rotation instead
+                // Save the position and rotation at the end of Update function, so you can compare previous pos/rot to current here
 
-                // Appliquer les nouvelles valeurs de position et de rotation à l'objet saisi
-                grabbedObject.position = transform.position;
-                grabbedObject.rotation = transform.rotation;
+                Vector3 deltaPosition = transform.position - initialPosition;
+                Quaternion deltaRotation = transform.rotation * Quaternion.Inverse(initialRotation);
+
+                grabbedObject.position += deltaPosition;
+
+                Quaternion newRotation = deltaRotation * grabbedObject.rotation;
+                grabbedObject.rotation = newRotation;           
             }
         }
-        else
-        {
-            // Si le bouton est relâché, libérer l'objet saisi
+        // If let go of button, release object
+        else if (grabbedObject)
             grabbedObject = null;
-        }
 
-        // Réinitialiser la liste des objets proches
-        nearObjects.Clear();
+        // Should save the current position and rotation here
+        initialPosition = transform.position;
+        initialRotation = transform.rotation;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Ajouter les objets proches à la liste
+        // Make sure to tag grabbable objects with the "grabbable" tag
+        // You also need to make sure to have colliders for the grabbable objects and the controllers
+        // Make sure to set the controller colliders as triggers or they will get misplaced
+        // You also need to add Rigidbody to the controllers for these functions to be triggered
+        // Make sure gravity is disabled though, or your controllers will (virtually) fall to the ground
+
         Transform t = other.transform;
-        if (t && t.tag.ToLower() == "grabbable")
+        if(t && t.tag.ToLower()=="grabbable")
             nearObjects.Add(t);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // Retirer les objets proches de la liste
         Transform t = other.transform;
-        if (t && t.tag.ToLower() == "grabbable")
+        if( t && t.tag.ToLower()=="grabbable")
             nearObjects.Remove(t);
     }
 }

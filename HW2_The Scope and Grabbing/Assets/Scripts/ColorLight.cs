@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Lightscript : MonoBehaviour
+public class ColorLight : MonoBehaviour
 {
     public Light light;
     public InputActionReference action;
