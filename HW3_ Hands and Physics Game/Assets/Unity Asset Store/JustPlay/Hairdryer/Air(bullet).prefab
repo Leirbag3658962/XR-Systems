@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 9020810404608931860}
   - component: {fileID: 1559963899443871904}
   - component: {fileID: -3082097960523907819}
+  - component: {fileID: -873745423363768277}
   m_Layer: 0
   m_Name: Air(bullet)
   m_TagString: Untagged
@@ -114,3 +115,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
+--- !u!114 &-873745423363768277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2696166535310381532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39d88101ce5c95f47a29b0a4f198d45b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
