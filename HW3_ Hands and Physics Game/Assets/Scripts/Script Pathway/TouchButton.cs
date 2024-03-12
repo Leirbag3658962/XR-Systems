@@ -18,9 +18,9 @@ public class TouchButton : XRBaseInteractable
         numberPad = FindObjectOfType<NumberPad>(); 
     }
 
-    protected override void OnHoverEntered(HoverEnterEventArgs args)
+    protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
-        base.OnHoverEntered(args);
+        base.OnSelectEntered(args);
         if (numberPad != null)
         {
             numberPad.AddNumberToSequence(value);
@@ -28,9 +28,9 @@ public class TouchButton : XRBaseInteractable
         }
     }
 
-    protected override void OnHoverExited(HoverExitEventArgs args)
+    protected override void OnSelectExited(SelectExitEventArgs args)
     {
-        base.OnHoverExited(args);
+        base.OnSelectExited(args);
         buttonMeshRenderer.material = baseMaterial;
     }
 }
